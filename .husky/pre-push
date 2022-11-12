@@ -1,0 +1,17 @@
+#!/bin/bash
+set -e
+
+. "$(dirname -- "$0")/_/husky.sh"
+
+branch=$(git rev-parse --abbrev-ref HEAD)
+
+if [[ $branch =~ ^(feature/|chore/|fix/).*$ ]]; then
+  sh script/code-lint.sh
+  yarn test
+else
+  echo "\033[31m✖ 请使用正确的分支名称，参考：\033[0m"
+  echo "\033[32m  ꔷ feature/jira-id-description  \033[0m"
+  echo "\033[32m  ꔷ chore/jira-id-description  \033[0m"
+  echo "\033[32m  ꔷ fix/jira-id-description  \033[0m"
+  exit 1
+fi
