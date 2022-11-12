@@ -1,37 +1,42 @@
 import React, { useState } from 'react'
+import { useNavigate } from 'react-router-dom'
 import {
   AppBar,
   Button,
   Toolbar,
   IconButton,
   Grid,
-  Typography,
   Dialog,
   DialogContent,
   DialogTitle,
   DialogContentText,
-  DialogActions
+  DialogActions, Typography
 } from '@mui/material'
 import { Logout as IconLogout } from '@mui/icons-material'
-import Logo from '@src/asset/img/welab_logo.png'
 
 const Header: () => JSX.Element = () => {
+  const navigate = useNavigate()
   const [open, setOpen] = useState(false)
-  const handleOpen: () => void = () => {
-    setOpen(true)
+  const handleNavigate: (path: string) => void = (path) => {
+    navigate(path)
   }
-  const handleClose: () => void = () => {
-    setOpen(false)
+  const handleToggle: (value: boolean) => void = (value) => {
+    setOpen(value)
   }
   const handleConfirm: () => void = () => {
+    // todo.archie logout
   }
   return (
-    <AppBar color="default" position="sticky" sx={style.container}>
+    <AppBar position="sticky">
       <Toolbar>
         <Grid container>
-          <Grid item sx={style.main}>
-            <img src={Logo} style={style.logo} draggable="false" alt="logo" />
-            <Typography variant="h6" sx={style.text}>Payroll System</Typography>
+          <Grid item sx={{ flex: 1, paddingLeft: '20vw', display: 'flex', alignItems: 'center' }}>
+            <Button variant="text" sx={{ color: 'white', marginRight: '2rem' }} onClick={() => handleNavigate('/main')}>
+              <Typography variant="h6">首页</Typography>
+            </Button>
+            <Button variant="text" sx={{ color: 'white' }} onClick={() => handleNavigate('/order')}>
+              <Typography variant="h6">订单</Typography>
+            </Button>
           </Grid>
           <Grid item>
             <IconButton
@@ -39,14 +44,14 @@ const Header: () => JSX.Element = () => {
               aria-label="account of current user"
               aria-controls="menu-appbar"
               aria-haspopup="true"
-              onClick={handleOpen}
+              onClick={() => handleToggle(true)}
               color="inherit"
             >
               <IconLogout />
             </IconButton>
             <Dialog
               open={open}
-              onClose={handleClose}
+              onClose={() => handleToggle(false)}
               aria-labelledby="alert-dialog-title"
               aria-describedby="alert-dialog-description"
             >
@@ -59,7 +64,7 @@ const Header: () => JSX.Element = () => {
                 </DialogContentText>
               </DialogContent>
               <DialogActions sx={{ marginRight: '2rem' }}>
-                <Button onClick={handleClose}>No</Button>
+                <Button onClick={() => handleToggle(false)}>No</Button>
                 <Button onClick={handleConfirm} sx={{ color: 'red' }} autoFocus>Confirm</Button>
               </DialogActions>
             </Dialog>
@@ -71,23 +76,3 @@ const Header: () => JSX.Element = () => {
 }
 
 export default Header
-
-const style = {
-  container: {
-    backgroundColor: 'white'
-  },
-  main: {
-    flex: 1,
-    display: 'flex',
-    alignItems: 'center'
-  },
-  logo: {
-    width: '3rem',
-    height: '2.5rem',
-    margin: '0 2rem 0 1rem'
-  },
-  text: {
-    color: '#3f469a',
-    userSelect: 'none'
-  }
-}
