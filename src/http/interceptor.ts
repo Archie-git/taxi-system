@@ -1,5 +1,4 @@
 import { AxiosInstance } from 'axios'
-import UtilKeycloak from '@src/util/keycloak'
 
 export const Interceptor = {
   apply: (instance: AxiosInstance) => {
@@ -15,7 +14,7 @@ export const Interceptor = {
     // 02.响应拦截器
     instance.interceptors.response.use((response) => {
       if (response.status === 401) {
-        void UtilKeycloak.logout()
+        // void UtilKeycloak.logout()
       } else if (response.status >= 400 && response.status < 500) {
         console.log('chile ==客户端错误=>')
       } else if (response.status >= 500) {

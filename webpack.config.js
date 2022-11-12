@@ -30,19 +30,12 @@ module.exports = {
         test: /\.(css|sass|scss)$/i,
         use: [
           { loader: 'style-loader' },
-          { loader: 'css-loader', options: { modules: true } },
-          { loader: 'sass-loader' }
+          { loader: 'css-loader', options: { modules: true } }
         ]
       },
       {
         test: /\.(svg|png|jpg|gif)$/i,
         use: [
-          // {
-          //   loader: 'url-loader',
-          //   options: {
-          //     limit: 8192
-          //   }
-          // },
           {
             loader: 'file-loader',
             options: {

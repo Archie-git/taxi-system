@@ -1,5 +1,4 @@
 import React, { useState } from 'react'
-import UtilKeycloak from '@src/util/keycloak'
 import {
   AppBar,
   Button,
@@ -25,7 +24,6 @@ const Header: () => JSX.Element = () => {
     setOpen(false)
   }
   const handleConfirm: () => void = () => {
-    void UtilKeycloak.logout()
   }
   return (
     <AppBar color="default" position="sticky" sx={style.container}>
