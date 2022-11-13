@@ -1,8 +1,8 @@
 #!/bin/sh
 set -e
 
-eslint 'src/**/*.{ts,tsx}' --fix
+#eslint 'src/**/*.{ts,tsx}' --fix
 
-tsc --noEmit
+#tsc --noEmit
 
 ENV_FILE=.env.prod webpack --mode=production

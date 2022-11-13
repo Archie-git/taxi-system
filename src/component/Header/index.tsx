@@ -1,95 +1,105 @@
 import React, { useState } from 'react'
-import UtilKeycloak from '@src/util/keycloak'
+import { useLocation, useNavigate } from 'react-router-dom'
 import {
   AppBar,
   Button,
   Toolbar,
   IconButton,
-  Grid,
-  Typography,
   Dialog,
   DialogContent,
   DialogTitle,
   DialogContentText,
-  DialogActions
+  DialogActions,
+  Typography,
+  Badge
 } from '@mui/material'
-import { Logout as IconLogout } from '@mui/icons-material'
-import Logo from '@src/asset/img/welab_logo.png'
+import {
+  Menu as IconMenu,
+  Home as IconHome,
+  Logout as IconLogout,
+  AccountCircle as IconAccount
+} from '@mui/icons-material'
+import { useSelector } from '@src/store'
 
 const Header: () => JSX.Element = () => {
+  const location = useLocation()
+  const navigate = useNavigate()
+  const orderCount = useSelector((state) => state.data.orders.length)
   const [open, setOpen] = useState(false)
-  const handleOpen: () => void = () => {
-    setOpen(true)
+  const getTitle: () => string = () => {
+    if (location.pathname.startsWith('/main')) {
+      return '首页'
+    } else if (location.pathname.startsWith('/order-list')) {
+      return '订单列表'
+    } else if (location.pathname.startsWith('/order-detail')) {
+      return '订单详情'
+    } else {
+      return ''
+    }
   }
-  const handleClose: () => void = () => {
-    setOpen(false)
+  const handleNavigate: (path: string) => void = (path) => {
+    navigate(path)
+  }
+  const handleToggle: (value: boolean) => void = (value) => {
+    setOpen(value)
   }
   const handleConfirm: () => void = () => {
-    void UtilKeycloak.logout()
+    // todo.archie logout
   }
   return (
-    <AppBar color="default" position="sticky" sx={style.container}>
+    <AppBar position="sticky">
       <Toolbar>
-        <Grid container>
-          <Grid item sx={style.main}>
-            <img src={Logo} style={style.logo} draggable="false" alt="logo" />
-            <Typography variant="h6" sx={style.text}>Payroll System</Typography>
-          </Grid>
-          <Grid item>
-            <IconButton
-              size="large"
-              aria-label="account of current user"
-              aria-controls="menu-appbar"
-              aria-haspopup="true"
-              onClick={handleOpen}
-              color="inherit"
-            >
-              <IconLogout />
-            </IconButton>
-            <Dialog
-              open={open}
-              onClose={handleClose}
-              aria-labelledby="alert-dialog-title"
-              aria-describedby="alert-dialog-description"
-            >
-              <DialogTitle id="alert-dialog-title">
-                Log out your account ?
-              </DialogTitle>
-              <DialogContent>
-                <DialogContentText id="alert-dialog-description" sx={{ paddingRight: '5rem' }}>
-                  The local cache and data of your account will be cleared.
-                </DialogContentText>
-              </DialogContent>
-              <DialogActions sx={{ marginRight: '2rem' }}>
-                <Button onClick={handleClose}>No</Button>
-                <Button onClick={handleConfirm} sx={{ color: 'red' }} autoFocus>Confirm</Button>
-              </DialogActions>
-            </Dialog>
-          </Grid>
-        </Grid>
+        <IconButton size="large" color="inherit" sx={{ marginRight: 2 }}>
+          <IconMenu />
+        </IconButton>
+        <Typography variant="h6" sx={{ flex: 1 }}>{getTitle()}</Typography>
+        <IconButton
+          size="large"
+          color="inherit"
+          onClick={() => handleNavigate('/main')}
+        >
+          <IconHome />
+        </IconButton>
+        <IconButton
+          size="large"
+          color="inherit"
+          onClick={() => handleNavigate('/order-list')}
+        >
+          <Badge badgeContent={orderCount} color="error">
+            <IconAccount />
+          </Badge>
+        </IconButton>
+        <IconButton
+          size="large"
+          color="inherit"
+          sx={{ marginLeft: '5rem' }}
+          onClick={() => handleToggle(true)}
+        >
+          <IconLogout />
+        </IconButton>
+        <Dialog
+          open={open}
+          onClose={() => handleToggle(false)}
+          aria-labelledby="alert-dialog-title"
+          aria-describedby="alert-dialog-description"
+        >
+          <DialogTitle id="alert-dialog-title">
+            Log out your account ?
+          </DialogTitle>
+          <DialogContent>
+            <DialogContentText id="alert-dialog-description" sx={{ paddingRight: '5rem' }}>
+              The local cache and data of your account will be cleared.
+            </DialogContentText>
+          </DialogContent>
+          <DialogActions sx={{ marginRight: '2rem' }}>
+            <Button onClick={() => handleToggle(false)}>No</Button>
+            <Button onClick={handleConfirm} sx={{ color: 'red' }} autoFocus>Confirm</Button>
+          </DialogActions>
+        </Dialog>
+
       </Toolbar>
     </AppBar>
   )
 }
 
 export default Header
-
-const style = {
-  container: {
-    backgroundColor: 'white'
-  },
-  main: {
-    flex: 1,
-    display: 'flex',
-    alignItems: 'center'
-  },
-  logo: {
-    width: '3rem',
-    height: '2.5rem',
-    margin: '0 2rem 0 1rem'
-  },
-  text: {
-    color: '#3f469a',
-    userSelect: 'none'
-  }
-}

@@ -2,8 +2,8 @@ import axios, { AxiosInstance, CreateAxiosDefaults, AxiosRequestConfig, AxiosRes
 import Interceptor from '@src/http/interceptor'
 import AppStore, { mainActions } from '@src/store'
 
-type HttpMethodWithParams = (path: string, params: Object, config?: AxiosRequestConfig) => Promise<AxiosResponse>
-type HttpMethodWithData = (path: string, data: FormData | Object, config?: AxiosRequestConfig) => Promise<AxiosResponse>
+type HttpMethodWithParams = (path: string, params?: Object, config?: AxiosRequestConfig) => Promise<AxiosResponse>
+type HttpMethodWithData = (path: string, data?: FormData | Object, config?: AxiosRequestConfig) => Promise<AxiosResponse>
 
 class Http {
   private readonly instance: AxiosInstance

@@ -1,7 +1,7 @@
 const Api = {
-  uploadFile: () => {
+  getCities: () => {
     return {
-      path: '/v1/payroll/upload'
+      path: '/v1/cities'
     }
   }
 }
